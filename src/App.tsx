@@ -1,27 +1,66 @@
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { AppLayout } from "@/components/AppLayout";
+import { AppContext, type ConnectionState } from "@/lib/store";
+import Connect from "./pages/Connect";
+import Overview from "./pages/Overview";
+import Cardinality from "./pages/Cardinality";
+import Histograms from "./pages/Histograms";
+import Labels from "./pages/Labels";
+import Scrapes from "./pages/Scrapes";
+import Simulate from "./pages/Simulate";
+import Recommendations from "./pages/Recommendations";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Force dark mode
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
+
+  const [connection, setConnection] = useState<ConnectionState>({
+    config: null,
+    isConnected: false,
+    tsdbStatus: null,
+    targets: null,
+    promConfig: null,
+  });
+
+  const disconnect = () => {
+    setConnection({ config: null, isConnected: false, tsdbStatus: null, targets: null, promConfig: null });
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AppContext.Provider value={{ connection, setConnection, disconnect }}>
+          <BrowserRouter>
+            <AppLayout>
+              <Routes>
+                <Route path="/" element={<Connect />} />
+                <Route path="/overview" element={<Overview />} />
+                <Route path="/cardinality" element={<Cardinality />} />
+                <Route path="/histograms" element={<Histograms />} />
+                <Route path="/labels" element={<Labels />} />
+                <Route path="/scrapes" element={<Scrapes />} />
+                <Route path="/simulate" element={<Simulate />} />
+                <Route path="/recommendations" element={<Recommendations />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AppLayout>
+          </BrowserRouter>
+        </AppContext.Provider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
