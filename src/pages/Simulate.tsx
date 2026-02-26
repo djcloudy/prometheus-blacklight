@@ -7,6 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlayCircle, Plus, Trash2, ArrowRight } from "lucide-react";
 import { useState, useMemo } from "react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type SimAction = "drop_label" | "drop_bucket" | "increase_interval" | "drop_metric";
 
@@ -147,9 +151,25 @@ export default function Simulate() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg">Active Simulations</CardTitle>
-              <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={clearAll}>
-                <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear All
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
+                    <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear All
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Clear all simulations?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will remove all {simulations.length} simulation(s). This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={clearAll}>Clear All</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </CardHeader>
             <CardContent className="space-y-2">
               {simulations.map((sim) => (
