@@ -16,6 +16,7 @@ import {
   type PrometheusConfig,
 } from "@/lib/prometheus";
 import { CheckCircle2, XCircle, Loader2, Link, Trash2, Skull } from "lucide-react";
+import { PageHelp, connectHelp } from "@/components/PageHelp";
 
 export default function Connect() {
   const { setConnection } = useAppContext();
@@ -70,6 +71,7 @@ export default function Connect() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="space-y-4">
+        <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
           {/* Chalk outline body */}
           <div className="relative shrink-0">
@@ -94,6 +96,8 @@ export default function Connect() {
               Forensic performance analyzer for Prometheus. Connect to your instance to begin the investigation.
             </p>
           </div>
+        </div>
+        <PageHelp {...connectHelp} />
         </div>
       </div>
 

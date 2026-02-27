@@ -3,6 +3,7 @@ import { Navigate, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Flame, TrendingUp, AlertTriangle, RefreshCw, ArrowRight, Loader2, PlayCircle } from "lucide-react";
+import { PageHelp, churnHelp } from "@/components/PageHelp";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useCallback } from "react";
 import { queryInstant } from "@/lib/prometheus";
@@ -124,10 +125,13 @@ export default function Churn() {
             Why memory spikes happen — series creation/removal rates and head block pressure.
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={fetchData} disabled={data.loading}>
-          {data.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-          <span className="ml-1.5">Refresh</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={fetchData} disabled={data.loading}>
+            {data.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            <span className="ml-1.5">Refresh</span>
+          </Button>
+          <PageHelp {...churnHelp} />
+        </div>
       </div>
 
       {data.error && (

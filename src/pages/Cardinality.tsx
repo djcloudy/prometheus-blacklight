@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { BarChart3 } from "lucide-react";
 import { Treemap, ResponsiveContainer } from "recharts";
 import CardinalityMultiplierTree from "@/components/CardinalityMultiplierTree";
+import { PageHelp, cardinalityHelp } from "@/components/PageHelp";
 
 export default function Cardinality() {
   const { connection } = useAppContext();
@@ -24,14 +25,17 @@ export default function Cardinality() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <BarChart3 className="h-6 w-6" />
-          High Cardinality Analysis
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Identifies the most expensive metrics, labels, and label-value pairs.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <BarChart3 className="h-6 w-6" />
+            High Cardinality Analysis
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Identifies the most expensive metrics, labels, and label-value pairs.
+          </p>
+        </div>
+        <PageHelp {...cardinalityHelp} />
       </div>
 
       {/* Treemap */}

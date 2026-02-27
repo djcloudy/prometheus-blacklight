@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GitBranch, Copy, Check } from "lucide-react";
+import { PageHelp, labelsHelp } from "@/components/PageHelp";
 import { useMemo, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 
@@ -30,14 +31,17 @@ export default function Labels() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <GitBranch className="h-6 w-6 text-severity-churn" />
-          Label Churn & Explosion
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Detects dynamic and unbounded labels that cause series explosion.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <GitBranch className="h-6 w-6 text-severity-churn" />
+            Label Churn & Explosion
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Detects dynamic and unbounded labels that cause series explosion.
+          </p>
+        </div>
+        <PageHelp {...labelsHelp} />
       </div>
 
       <div className="grid grid-cols-3 gap-4">

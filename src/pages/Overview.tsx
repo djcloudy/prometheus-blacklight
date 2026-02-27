@@ -2,6 +2,7 @@ import { useAppContext } from "@/lib/store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Activity, Database, Radio, Timer } from "lucide-react";
 import { Navigate } from "react-router-dom";
+import { PageHelp, overviewHelp } from "@/components/PageHelp";
 
 export default function Overview() {
   const { connection } = useAppContext();
@@ -17,11 +18,14 @@ export default function Overview() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
-        <p className="text-muted-foreground text-sm">
-          Connected to <span className="font-mono text-foreground">{connection.config?.baseUrl}</span>
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+          <p className="text-muted-foreground text-sm">
+            Connected to <span className="font-mono text-foreground">{connection.config?.baseUrl}</span>
+          </p>
+        </div>
+        <PageHelp {...overviewHelp} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
