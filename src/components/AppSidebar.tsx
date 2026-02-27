@@ -1,6 +1,7 @@
 import {
   Activity,
   BarChart3,
+  Flame,
   GitBranch,
   Layers,
   Link,
@@ -28,6 +29,7 @@ const navItems = [
   { title: "Connect", url: "/", icon: Link },
   { title: "Overview", url: "/overview", icon: Activity },
   { title: "Cardinality", url: "/cardinality", icon: BarChart3 },
+  { title: "Churn", url: "/churn", icon: Flame },
   { title: "Histograms", url: "/histograms", icon: Layers },
   { title: "Labels", url: "/labels", icon: GitBranch },
   { title: "Scrapes", url: "/scrapes", icon: Timer },

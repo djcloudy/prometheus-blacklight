@@ -9,6 +9,7 @@ import { AppContext, type ConnectionState } from "@/lib/store";
 import Connect from "./pages/Connect";
 import Overview from "./pages/Overview";
 import Cardinality from "./pages/Cardinality";
+import Churn from "./pages/Churn";
 import Histograms from "./pages/Histograms";
 import Labels from "./pages/Labels";
 import Scrapes from "./pages/Scrapes";
@@ -48,6 +49,7 @@ const App = () => {
                 <Route path="/" element={<Connect />} />
                 <Route path="/overview" element={<Overview />} />
                 <Route path="/cardinality" element={<Cardinality />} />
+                <Route path="/churn" element={<Churn />} />
                 <Route path="/histograms" element={<Histograms />} />
                 <Route path="/labels" element={<Labels />} />
                 <Route path="/scrapes" element={<Scrapes />} />
