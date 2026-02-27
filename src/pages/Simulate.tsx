@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PlayCircle, Plus, Trash2, ArrowRight } from "lucide-react";
-import { useState, useMemo } from "react";
+import { PlayCircle, Plus, Trash2, ArrowRight, ChevronsUpDown } from "lucide-react";
+import { useState, useMemo, useRef } from "react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type SimAction = "drop_label" | "drop_bucket" | "increase_interval" | "drop_metric";
 
@@ -36,6 +39,12 @@ export default function Simulate() {
   });
   const [action, setAction] = useState<SimAction>("drop_metric");
   const [target, setTarget] = useState("");
+  const [comboOpen, setComboOpen] = useState(false);
+
+  const suggestions = useMemo(() => {
+    if (action === "drop_label") return labels.map((l) => l.name);
+    return metrics.map((m) => m.name);
+  }, [action, metrics, labels]);
 
   // Persist simulations to localStorage
   const updateSimulations = (updater: (prev: Simulation[]) => Simulation[]) => {
@@ -129,13 +138,44 @@ export default function Simulate() {
             </div>
             <div className="space-y-2">
               <Label>Target</Label>
-              <Input
-                className="font-mono text-sm"
-                placeholder={action === "drop_label" ? "label_name" : "metric_name"}
-                value={target}
-                onChange={(e) => setTarget(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && addSimulation()}
-              />
+              <Popover open={comboOpen} onOpenChange={setComboOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={comboOpen}
+                    className="w-full justify-between font-mono text-sm h-10"
+                  >
+                    {target || (action === "drop_label" ? "Select label…" : "Select metric…")}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder={action === "drop_label" ? "Search labels…" : "Search metrics…"} />
+                    <CommandList>
+                      <CommandEmpty>No matches found.</CommandEmpty>
+                      <CommandGroup>
+                        <ScrollArea className="max-h-[200px]">
+                          {suggestions.map((name) => (
+                            <CommandItem
+                              key={name}
+                              value={name}
+                              onSelect={(v) => {
+                                setTarget(v);
+                                setComboOpen(false);
+                              }}
+                              className="font-mono text-xs"
+                            >
+                              {name}
+                            </CommandItem>
+                          ))}
+                        </ScrollArea>
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="flex items-end">
               <Button onClick={addSimulation} disabled={!target.trim()}>
