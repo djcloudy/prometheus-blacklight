@@ -1,8 +1,8 @@
 import { useAppContext } from "@/lib/store";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Flame, TrendingUp, AlertTriangle, RefreshCw, ArrowRight, Loader2 } from "lucide-react";
+import { Flame, TrendingUp, AlertTriangle, RefreshCw, ArrowRight, Loader2, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useCallback } from "react";
 import { queryInstant } from "@/lib/prometheus";
@@ -60,6 +60,7 @@ export default function Churn() {
   const { connection } = useAppContext();
   const [data, setData] = useState<ChurnData>(INITIAL);
   const config = connection.config;
+  const navigate = useNavigate();
 
   const fetchData = useCallback(async () => {
     if (!config) return;
@@ -215,7 +216,9 @@ export default function Churn() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <TargetTable results={data.topScrapeSeriesAdded} />
+            <TargetTable results={data.topScrapeSeriesAdded} onSimulate={(job) => {
+              navigate(`/simulate?action=drop_metric&target=${encodeURIComponent(job)}`);
+            }} />
           </CardContent>
         </Card>
       )}
@@ -230,7 +233,9 @@ export default function Churn() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <TargetTable results={data.topScrapePostRelabel} />
+            <TargetTable results={data.topScrapePostRelabel} onSimulate={(job) => {
+              navigate(`/simulate?action=drop_metric&target=${encodeURIComponent(job)}`);
+            }} />
           </CardContent>
         </Card>
       )}
@@ -349,7 +354,7 @@ function SeverityBadge({ severity }: { severity: "critical" | "moderate" | "heal
   return <Badge className={`${classes[severity]} text-xs`}>{labels[severity]}</Badge>;
 }
 
-function TargetTable({ results }: { results: MetricResult[] }) {
+function TargetTable({ results, onSimulate }: { results: MetricResult[]; onSimulate?: (job: string) => void }) {
   return (
     <div className="space-y-1.5">
       {results.map((r, i) => {
@@ -369,9 +374,22 @@ function TargetTable({ results }: { results: MetricResult[] }) {
                 {instance}
               </span>
             </div>
-            <span className="font-mono font-medium text-right w-24 shrink-0">
-              {isNaN(val) ? "—" : val.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-medium text-right w-24 shrink-0">
+                {isNaN(val) ? "—" : val.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </span>
+              {onSimulate && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => onSimulate(job)}
+                >
+                  <PlayCircle className="h-3.5 w-3.5 mr-1" />
+                  Simulate
+                </Button>
+              )}
+            </div>
           </div>
         );
       })}

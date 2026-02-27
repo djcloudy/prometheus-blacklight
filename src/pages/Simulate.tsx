@@ -1,12 +1,12 @@
 import { useAppContext } from "@/lib/store";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlayCircle, Plus, Trash2, ArrowRight, ChevronsUpDown } from "lucide-react";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -26,6 +26,7 @@ interface Simulation {
 
 export default function Simulate() {
   const { connection } = useAppContext();
+  const [searchParams, setSearchParams] = useSearchParams();
   const tsdb = connection.tsdbStatus;
   const totalSeries = tsdb?.headStats?.numSeries ?? 0;
   const metrics = tsdb?.seriesCountByMetricName ?? [];
@@ -45,6 +46,18 @@ export default function Simulate() {
     if (action === "drop_label") return labels.map((l) => l.name);
     return metrics.map((m) => m.name);
   }, [action, metrics, labels]);
+
+  // Handle incoming deep-link params from Churn page
+  useEffect(() => {
+    const paramAction = searchParams.get("action") as SimAction | null;
+    const paramTarget = searchParams.get("target");
+    if (paramAction && paramTarget) {
+      setAction(paramAction);
+      setTarget(paramTarget);
+      // Clear params so they don't re-trigger
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   // Persist simulations to localStorage
   const updateSimulations = (updater: (prev: Simulation[]) => Simulation[]) => {
