@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Layers, Copy, Check } from "lucide-react";
+import { PageHelp, histogramsHelp } from "@/components/PageHelp";
 import { useState, useMemo } from "react";
 import { toast } from "@/hooks/use-toast";
 
@@ -47,14 +48,17 @@ export default function Histograms() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Layers className="h-6 w-6 text-severity-histogram" />
-          Histogram Abuse Detection
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Detects excessive bucket metrics and estimates ingestion savings.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <Layers className="h-6 w-6 text-severity-histogram" />
+            Histogram Abuse Detection
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Detects excessive bucket metrics and estimates ingestion savings.
+          </p>
+        </div>
+        <PageHelp {...histogramsHelp} />
       </div>
 
       {bucketMetrics.length === 0 ? (

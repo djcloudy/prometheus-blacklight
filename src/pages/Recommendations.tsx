@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Shield, Copy, Check, ChevronDown } from "lucide-react";
+import { PageHelp, recommendationsHelp } from "@/components/PageHelp";
 import { useMemo, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -110,14 +111,17 @@ export default function Recommendations() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Shield className="h-6 w-6" />
-          Smart Recommendations
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Prioritized findings with actionable remediation steps.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <Shield className="h-6 w-6" />
+            Smart Recommendations
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Prioritized findings with actionable remediation steps.
+          </p>
+        </div>
+        <PageHelp {...recommendationsHelp} />
       </div>
 
       <div className="flex gap-2 flex-wrap">

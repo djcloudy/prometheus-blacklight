@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlayCircle, Plus, Trash2, ArrowRight, ChevronsUpDown } from "lucide-react";
+import { PageHelp, simulateHelp } from "@/components/PageHelp";
 import { useState, useMemo, useRef, useEffect } from "react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -119,14 +120,17 @@ export default function Simulate() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <PlayCircle className="h-6 w-6" />
-          "What If" Simulation
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Stack multiple simulations to estimate cumulative impact.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <PlayCircle className="h-6 w-6" />
+            "What If" Simulation
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Stack multiple simulations to estimate cumulative impact.
+          </p>
+        </div>
+        <PageHelp {...simulateHelp} />
       </div>
 
       <Card>

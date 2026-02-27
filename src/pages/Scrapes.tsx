@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Timer } from "lucide-react";
+import { PageHelp, scrapesHelp } from "@/components/PageHelp";
 import { useMemo } from "react";
 import {
   Table,
@@ -42,14 +43,17 @@ export default function Scrapes() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Timer className="h-6 w-6" />
-          Scrape Efficiency
-        </h1>
-        <p className="text-muted-foreground text-sm">
-          Analyzes scrape performance across all targets.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <Timer className="h-6 w-6" />
+            Scrape Efficiency
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Analyzes scrape performance across all targets.
+          </p>
+        </div>
+        <PageHelp {...scrapesHelp} />
       </div>
 
       <div className="grid grid-cols-3 gap-4">
